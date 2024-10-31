@@ -1,0 +1,53 @@
+class SmartDiet:
+    def __init__(self):
+        self.food = {}
+        self.total_calories = 0
+
+    def register_food(self, title, calories):
+        self.food[title] = calories
+
+    def add_food(self, title, count):
+        if title in self.food:
+            self.total_calories += self.food[title] * count
+        else:
+            print(f"Ошибка: '{title}' не зарегистрирован в системе.")
+
+    def calculate(self):
+        return self.total_calories
+
+
+if __name__ == '__main__':
+    food = {
+        "Хлеб": 300,
+        "Круассан": 450,
+        "Курица": 300
+    }
+    diet = SmartDiet()
+    for title, calories in food.items():
+        diet.register_food(title, calories)
+
+    while True:
+        print("\nВыберите еду:")
+        for title in food:
+            print("\t" + title)
+        title = input("Название (или 'выход' для завершения): ").strip()
+
+        if title.lower() == 'выход':
+            print("Завершение программы.")
+            break
+
+        if title not in food:
+            print(f"Ошибка: '{title}' не найдено в базе данных. Попробуйте снова.")
+            continue
+
+        try:
+            count = int(input("Количество: "))
+            if count < 0:
+                print("Количество должно быть положительным. Попробуйте снова.")
+                continue
+        except ValueError:
+            print("Ошибка: введите корректное число.")
+            continue
+
+        diet.add_food(title, count)
+        print("Суммарная калорийность:", diet.calculate())
